@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Pacifico&family=Nunito:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+  margin:0;padding:0;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+html,body{height:100%;}
+body{
+  min-height:100%;
+  background:-webkit-radial-gradient(20% 10% ellipse,#e8a0b8 0%,#d4789a 40%,#8aaed0 100%);
+  background:radial-gradient(ellipse at 20% 10%,#e8a0b8 0%,#d4789a 40%,#8aaed0 100%);
+  display:-webkit-flex;
+  display:flex;
+  -webkit-align-items:center;
+  align-items:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  overflow:hidden;
+  font-family:'Cormorant Garamond',serif;
+  cursor:pointer;
+  /* Fix iOS 100vh */
+  min-height: -webkit-fill-available;
+}
+
+.petal{position:fixed;pointer-events:none;opacity:0;-webkit-animation:drift linear infinite;animation:drift linear infinite;z-index:0}
+@-webkit-keyframes drift{
+  0%{opacity:0;-webkit-transform:translateY(-5vh) rotate(0deg);transform:translateY(-5vh) rotate(0deg)}
+  10%{opacity:0.7}90%{opacity:0.5}
+  100%{opacity:0;-webkit-transform:translateY(108vh) rotate(360deg);transform:translateY(108vh) rotate(360deg)}
+}
+@keyframes drift{
+  0%{opacity:0;transform:translateY(-5vh) rotate(0deg)}
+  10%{opacity:0.7}90%{opacity:0.5}
+  100%{opacity:0;transform:translateY(108vh) rotate(360deg)}
+}
+
+/* ---- card ---- */
+.card{
+  position:relative;z-index:1;
+  width:92vw; max-width:380px;
+  height:88vh; max-height:620px;
+  border-radius:36px;
+  border:1.5px solid rgba(255,255,255,0.35);
+  -webkit-box-shadow:0 24px 64px rgba(80,20,40,0.28),inset 0 1px 0 rgba(255,255,255,0.4);
+  box-shadow:0 24px 64px rgba(80,20,40,0.28),inset 0 1px 0 rgba(255,255,255,0.4);
+  display:-webkit-flex;
+  display:flex;
+  -webkit-flex-direction:column;
+  flex-direction:column;
+  -webkit-align-items:center;
+  align-items:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  padding:40px 32px 72px;
+  -webkit-transition:background 0.5s ease;
+  transition:background 0.5s ease;
+}
+
+.ribbon{
+  position:absolute;top:0;left:0;right:0;height:7px;border-radius:36px 36px 0 0;
+  background:-webkit-linear-gradient(left,rgba(255,255,255,0.5),rgba(255,255,255,0.15),rgba(255,255,255,0.5));
+  background:linear-gradient(90deg,rgba(255,255,255,0.5),rgba(255,255,255,0.15),rgba(255,255,255,0.5));
+}
+
+.dots{position:absolute;bottom:20px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);display:-webkit-flex;display:flex;gap:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.35);-webkit-transition:all 0.3s;transition:all 0.3s}
+.dot.on{background:rgba(255,255,255,0.95);width:20px;border-radius:4px}
+
+.hint{
+  position:absolute;bottom:40px;
+  font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.65);
+  -webkit-animation:blink 2.4s ease infinite 1.5s;
+  animation:blink 2.4s ease infinite 1.5s;
+}
+@-webkit-keyframes blink{0%,100%{opacity:0.2}50%{opacity:0.9}}
+@keyframes blink{0%,100%{opacity:0.2}50%{opacity:0.9}}
+
+.label{
+  font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-bottom:18px;
+}
+h1{font-family:'Pacifico',cursive;color:#fff;line-height:1.25;text-shadow:0 2px 12px rgba(80,20,40,0.2)}
+.body{font-size:20px;font-style:italic;color:rgba(255,255,255,0.93);line-height:1.75}
+.body b{font-weight:600;font-style:normal;color:#fff}
+
+.stitchwrap{position:relative;-webkit-animation:bob 2.8s ease-in-out infinite;animation:bob 2.8s ease-in-out infinite;margin-bottom:6px}
+@-webkit-keyframes bob{0%,100%{-webkit-transform:translateY(0);transform:translateY(0)}50%{-webkit-transform:translateY(-11px);transform:translateY(-11px)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+.sp{position:absolute;font-size:15px;-webkit-animation:spk 3.2s ease-in-out infinite;animation:spk 3.2s ease-in-out infinite}
+.sp1{top:-6px;left:-22px}.sp2{top:-10px;right:-16px}
+.sp3{bottom:4px;left:-26px;-webkit-animation-delay:1.4s;animation-delay:1.4s}
+.sp4{bottom:0;right:-20px;-webkit-animation-delay:2s;animation-delay:2s}
+@-webkit-keyframes spk{0%,100%{-webkit-transform:scale(1) rotate(0deg);opacity:0.7}50%{-webkit-transform:scale(1.5) rotate(18deg);opacity:1}}
+@keyframes spk{0%,100%{transform:scale(1) rotate(0deg);opacity:0.7}50%{transform:scale(1.5) rotate(18deg);opacity:1}}
+
+.icon{font-size:60px;display:block;margin-bottom:18px}
+.pop{-webkit-animation:pop 2s ease-in-out infinite;animation:pop 2s ease-in-out infinite}
+@-webkit-keyframes pop{0%,100%{-webkit-transform:scale(1)}50%{-webkit-transform:scale(1.1)}}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.sway{-webkit-animation:sway 2.4s ease-in-out infinite;animation:sway 2.4s ease-in-out infinite}
+@-webkit-keyframes sway{0%,100%{-webkit-transform:rotate(-5deg)}50%{-webkit-transform:rotate(5deg)}}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.pls{-webkit-animation:pls 2.2s ease-in-out infinite;animation:pls 2.2s ease-in-out infinite}
+@-webkit-keyframes pls{0%,100%{-webkit-transform:scale(1)}50%{-webkit-transform:scale(1.08)}}
+@keyframes pls{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+.badge{
+  margin-top:22px;
+  background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);
+  border-radius:50px;padding:11px 28px;
+  font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;
+  color:#fff;letter-spacing:0.1em;text-transform:uppercase;
+}
+
+.slide{display:none;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;width:100%}
+.slide.on{display:-webkit-flex;display:flex;-webkit-animation:fadein 0.4s ease forwards;animation:fadein 0.4s ease forwards}
+@-webkit-keyframes fadein{from{opacity:0;-webkit-transform:translateY(12px)}to{opacity:1;-webkit-transform:translateY(0)}}
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Confetti — CSS-only, no Web Animations API */
+.bit{
+  position:absolute;
+  border-radius:3px;
+  pointer-events:none;
+  opacity:0;
+}
+.bit.go{
+  -webkit-animation:fly 1.2s ease-out forwards;
+  animation:fly 1.2s ease-out forwards;
+}
+@-webkit-keyframes fly{
+  0%{opacity:1;-webkit-transform:translate(0,0) rotate(0deg) scale(1);}
+  100%{opacity:0;-webkit-transform:var(--tx) rotate(var(--rot)) scale(0.2);}
+}
+@keyframes fly{
+  0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1);}
+  100%{opacity:0;transform:var(--tx) rotate(var(--rot)) scale(0.2);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="petals"></div>
+
+<div class="card" id="card">
+  <div class="ribbon"></div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide on" id="s0">
+    <p class="label">a little note for you</p>
+    <div class="stitchwrap">
+      <span class="sp sp1">🌸</span><span class="sp sp2">✨</span>
+      <span class="sp sp3">🌺</span><span class="sp sp4">✨</span>
+      <svg width="162" height="162" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="100" cy="130" rx="52" ry="42" fill="#5aaee8"/>
+        <ellipse cx="100" cy="138" rx="32" ry="26" fill="#b8dff5"/>
+        <ellipse cx="100" cy="88" rx="54" ry="50" fill="#5aaee8"/>
+        <ellipse cx="50" cy="50" rx="22" ry="30" fill="#5aaee8" transform="rotate(-20,50,50)"/>
+        <ellipse cx="50" cy="50" rx="12" ry="18" fill="#f9c0d8" transform="rotate(-20,50,50)"/>
+        <ellipse cx="150" cy="50" rx="22" ry="30" fill="#5aaee8" transform="rotate(20,150,50)"/>
+        <ellipse cx="150" cy="50" rx="12" ry="18" fill="#f9c0d8" transform="rotate(20,150,50)"/>
+        <ellipse cx="83" cy="84" rx="12" ry="14" fill="white"/>
+        <ellipse cx="117" cy="84" rx="12" ry="14" fill="white"/>
+        <ellipse cx="86" cy="87" rx="7" ry="8" fill="#1a1a2e"/>
+        <ellipse cx="120" cy="87" rx="7" ry="8" fill="#1a1a2e"/>
+        <circle cx="88" cy="84" r="2.5" fill="white"/>
+        <circle cx="122" cy="84" r="2.5" fill="white"/>
+        <ellipse cx="100" cy="100" rx="9" ry="6" fill="#3a80c0"/>
+        <path d="M84 110 Q100 125 116 110" stroke="#1a1a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="94" y="111" width="7" height="6" rx="2" fill="white"/>
+        <ellipse cx="72" cy="104" rx="10" ry="7" fill="#f9c0d8" opacity="0.65"/>
+        <ellipse cx="128" cy="104" rx="10" ry="7" fill="#f9c0d8" opacity="0.65"/>
+        <ellipse cx="56" cy="140" rx="14" ry="10" fill="#5aaee8" transform="rotate(-30,56,140)"/>
+        <ellipse cx="144" cy="140" rx="14" ry="10" fill="#5aaee8" transform="rotate(30,144,140)"/>
+        <ellipse cx="44" cy="148" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="51" cy="153" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="58" cy="155" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="156" cy="148" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="149" cy="153" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="142" cy="155" rx="4" ry="6" fill="#4a9fd8"/>
+        <ellipse cx="80" cy="170" rx="18" ry="10" fill="#4a9fd8"/>
+        <ellipse cx="120" cy="170" rx="18" ry="10" fill="#4a9fd8"/>
+        <ellipse cx="88" cy="92" rx="4" ry="8" fill="#4a9fd8" transform="rotate(-10,88,92)"/>
+        <ellipse cx="100" cy="88" rx="4" ry="9" fill="#4a9fd8"/>
+        <ellipse cx="112" cy="92" rx="4" ry="8" fill="#4a9fd8" transform="rotate(10,112,92)"/>
+        <ellipse cx="88" cy="48" rx="10" ry="7" fill="#c2516e" transform="rotate(-20,88,48)"/>
+        <ellipse cx="112" cy="48" rx="10" ry="7" fill="#c2516e" transform="rotate(20,112,48)"/>
+        <circle cx="100" cy="48" r="5.5" fill="#e0789a"/>
+      </svg>
+    </div>
+    <p class="body" style="font-size:15px;margin-top:10px;color:rgba(255,255,255,0.82)">tap anywhere — this is for you 🌸</p>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="s1">
+    <span class="icon sway">🙏🏽</span>
+    <h1 style="font-size:36px;margin-bottom:18px">That is a lot.</h1>
+    <p class="body">Nursing.<br/>Online school.<br/>Far from home.<br/><br/><b>All at once.</b></p>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="s2">
+    <span class="icon pop">🏥🩺</span>
+    <h1 style="font-size:30px;margin-bottom:18px">Nursing is<br/>no joke.</h1>
+    <p class="body">You carry people<br/>on their worst days —<br/><br/>then come home<br/>and open a textbook.<br/><br/><b>That takes something.</b></p>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="s3">
+    <span class="icon pls">📚🎓</span>
+    <h1 style="font-size:29px;margin-bottom:18px">And business<br/>school on top.</h1>
+    <p class="body">While working.<br/>While exhausted.<br/><br/><b>Building a future<br/>in every spare hour.</b></p>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide" id="s4">
+    <span class="icon sway">🏡🥺</span>
+    <h1 style="font-size:32px;margin-bottom:18px">Missing home<br/>is real.</h1>
+    <p class="body">That ache is allowed.<br/><br/><b>You stayed anyway.</b><br/>That's not small.</p>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" id="s5">
+    <span class="icon pop">🌸✨🌸</span>
+    <h1 style="font-size:38px;margin-bottom:18px">Keep going.</h1>
+    <p class="body">You'll come back home<br/>as someone who<br/><b>earned it.</b></p>
+    <div class="badge">You've got this</div>
+  </div>
+
+  <div class="hint" id="hint">tap anywhere</div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  var total = 6;
+  var cur   = 0;
+
+  var bgs = [
+    'linear-gradient(145deg,#f0b8cc,#e090ae)',
+    'linear-gradient(145deg,#e0a0b4,#cc7090)',
+    'linear-gradient(145deg,#7aaed4,#5888bc)',
+    'linear-gradient(145deg,#a8c8e4,#7aaac8)',
+    'linear-gradient(145deg,#cc90a8,#b06888)',
+    'linear-gradient(145deg,#dc9cb0,#c07090)'
+  ];
+
+  // Build dots
+  var dotsEl = document.getElementById('dots');
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div');
+    d.className='dot'+(i===0?' on':'');
+    dotsEl.appendChild(d);
+  }
+
+  document.getElementById('card').style.background = bgs[0];
+
+  function next(){
+    if(cur >= total-1) return;
+    document.getElementById('s'+cur).classList.remove('on');
+    cur++;
+    document.getElementById('s'+cur).classList.add('on');
+    document.getElementById('card').style.background = bgs[cur];
+    var dots = dotsEl.children;
+    for(var i=0;i<dots.length;i++) dots[i].classList.remove('on');
+    dots[cur].classList.add('on');
+    if(cur === total-1){
+      document.getElementById('hint').style.display='none';
+      burst();
+    }
+  }
+
+  // Touch support for iOS
+  document.body.addEventListener('touchend', function(e){
+    e.preventDefault();
+    next();
+  }, {passive: false});
+
+  document.body.addEventListener('click', function(e){
+    next();
+  });
+
+  // Petals
+  var wrap = document.getElementById('petals');
+  var emojis = ['🌸','🌺','✨','🌷','🌼'];
+  for(var i=0;i<20;i++){
+    var p=document.createElement('div');p.className='petal';
+    p.textContent=emojis[i%emojis.length];
+    p.style.left=Math.random()*100+'%';
+    p.style.fontSize=(9+Math.random()*9)+'px';
+    p.style.animationDuration=(11+Math.random()*13)+'s';
+    p.style.animationDelay=(Math.random()*18)+'s';
+    wrap.appendChild(p);
+  }
+
+  // Confetti — CSS keyframe version (Safari safe)
+  function burst(){
+    var cols=['#fff','#f9c0d8','#b8dff5','#e8a0b8','#8aaed0'];
+    var card=document.getElementById('card');
+    for(var i=0;i<40;i++){
+      (function(idx){
+        var c=document.createElement('div');
+        c.className='bit';
+        var sz=(5+Math.random()*8)+'px';
+        var tx='translate('+(Math.random()-.5)*200+'px,'+(-(70+Math.random()*160))+'px)';
+        var rot=(Math.random()*500)+'deg';
+        c.style.background=cols[idx%cols.length];
+        c.style.left=(10+Math.random()*80)+'%';
+        c.style.top=(10+Math.random()*60)+'%';
+        c.style.width=sz;
+        c.style.height=sz;
+        c.style.borderRadius=Math.random()>.5?'50%':'3px';
+        c.style.setProperty('--tx', tx);
+        c.style.setProperty('--rot', rot);
+        c.style.animationDelay=(Math.random()*300)+'ms';
+        card.appendChild(c);
+        // trigger animation after paint
+        setTimeout(function(){ c.classList.add('go'); }, 20);
+        setTimeout(function(){ if(c.parentNode) c.parentNode.removeChild(c); }, 1800);
+      })(i);
+    }
+  }
+</script>
+</body>
+</html>
